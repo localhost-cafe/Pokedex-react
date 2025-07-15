@@ -1,0 +1,115 @@
+.pokemon-details-modal {
+  position: fixed;
+  top: 250px;
+  right: 200px;
+  width: 320px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 2px solid #ddd;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  box-sizing: border-box;
+  display: none;
+}
+
+.pokemon-details-modal.show {
+  display: block;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  z-index: 10001;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.pokemon-details-modal img {
+  width: 180px;
+  height: 150px;
+  object-fit: contain;
+  margin-bottom: 20px;
+  background: #f8f9fa;
+  border-radius: 15px;
+  padding: 15px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pokemon-details-modal h2 {
+  font-size: 28px;
+  margin-bottom: 15px;
+  color: #333;
+  text-transform: capitalize;
+  font-weight: 700;
+  text-align: center;
+}
+
+.pokemon-stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border: 1px solid #000;
+  table-layout: fixed;
+}
+
+.pokemon-stats-table td {
+  padding: 8px 10px;
+  border: 1px solid #000;
+  font-size: 14px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.pokemon-stats-table td:first-child {
+  font-weight: normal;
+  color: #333;
+  text-align: left;
+  width: 50%;
+}
+
+.pokemon-stats-table td:last-child {
+  color: #333;
+  text-align: right;
+  font-weight: normal;
+  width: 50%;
+}
+
+@media screen and (max-width: 1024px) {
+  .pokemon-details-modal {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    height: auto;
+    max-height: 90vh;
+    z-index: 10000;
+  }
+
+  .modal-backdrop {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 9999;
+  }
+}

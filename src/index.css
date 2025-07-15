@@ -1,0 +1,10 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f7f7f7;
+  margin: 0;
+}
+
+.pokemon-list-container {
+  width: 60%;
+}

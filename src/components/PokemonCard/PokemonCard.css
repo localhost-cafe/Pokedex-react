@@ -1,0 +1,155 @@
+.pokemon-card {
+  border: 2px solid #ddd;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: all 0.5s ease;
+  width: 180px;
+  height: 280px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 5px;
+  transform: scale(0.95);
+  opacity: 0;
+  animation: cardAppear 0.4s ease forwards;
+}
+
+@keyframes cardAppear {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.pokemon-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: #0672bf;
+}
+
+.pokemon-card img {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  margin: 0 auto 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.pokemon-types {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+h3 {
+  font-size: 22px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  color: #333;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.type {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #fff;
+  text-transform: capitalize;
+  font-weight: bold;
+  text-align: center;
+}
+
+.type.fire {
+  background-color: #f08030;
+}
+
+.type.water {
+  background-color: #6890f0;
+}
+
+.type.grass {
+  background-color: #78c850;
+}
+
+.type.electric {
+  background-color: #f8d030;
+  color: #000;
+}
+
+.type.ice {
+  background-color: #98d8d8;
+  color: #000;
+}
+
+.type.fighting {
+  background-color: #c03028;
+}
+
+.type.poison {
+  background-color: #a040a0;
+}
+
+.type.ground {
+  background-color: #e0c068;
+  color: #000;
+}
+
+.type.flying {
+  background-color: #a890f0;
+}
+
+.type.psychic {
+  background-color: #f85888;
+}
+
+.type.bug {
+  background-color: #a8b820;
+}
+
+.type.rock {
+  background-color: #b8a038;
+}
+
+.type.ghost {
+  background-color: #705898;
+}
+
+.type.dark {
+  background-color: #705848;
+}
+
+.type.dragon {
+  background-color: #7038f8;
+}
+
+.type.steel {
+  background-color: #b8b8d0;
+  color: #000;
+}
+
+.type.fairy {
+  background-color: #ee99ac;
+}
+
+.type.normal {
+  background-color: #a8a878;
+}
+
+.pokemon-card.active {
+  border: 2px solid #0672bf;
+  box-shadow: 0 0 12px rgba(6, 114, 191, 0.4);
+  transform: scale(1.03);
+}
