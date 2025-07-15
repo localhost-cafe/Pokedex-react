@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import Filter from "./components/Filter/Filter";
 import Header from "./components/Header/Header";
@@ -104,3 +105,8 @@ function App() {
 }
 
 export default App;
+=======
+export default function App() {
+  return <h1>Hello Pokedex!</h1>;
+}
+>>>>>>> da597b176cc08e8edfb69bc5d76c50dbd5b5d5c4
