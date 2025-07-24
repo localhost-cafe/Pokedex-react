@@ -1,6 +1,6 @@
 .pokemon-details-modal {
   position: fixed;
-  top: 250px;
+  top: 150px;
   right: 200px;
   width: 320px;
   max-height: 90vh;
