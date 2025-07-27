@@ -13,6 +13,7 @@
   z-index: 10000;
   box-sizing: border-box;
   display: none;
+  overflow-x: hidden;
 }
 
 .pokemon-details-modal.show {
@@ -21,8 +22,8 @@
 
 .close-button {
   position: absolute;
-  top: 10px;
-  right: 12px;
+  top: -15px;
+  right: -15px;
   background: none;
   border: none;
   font-size: 28px;
@@ -34,7 +35,7 @@
 }
 
 .close-button:hover {
-  color: #333;
+  color: #c70808;
 }
 
 .pokemon-details-modal img {

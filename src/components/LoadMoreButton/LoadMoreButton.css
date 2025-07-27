@@ -1,5 +1,5 @@
 .load-more-btn {
-  width: 88%;
+  width: 100%;
   padding: 15px 0;
   margin: 20px 0 0;
   background-color: #0672bf;
@@ -11,6 +11,7 @@
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.2s ease, transform 0.2s ease;
+  margin-bottom: 50px;
 }
 
 .load-more-btn:hover:not(:disabled) {
