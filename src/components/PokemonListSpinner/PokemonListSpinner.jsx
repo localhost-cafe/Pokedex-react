@@ -1,10 +1,10 @@
-import "./PokemonListSpinner.css";
+import './PokemonListSpinner.css';
 
 const PokemonListSpinner = () => {
   return (
     <div className="pokemon-list-spinner">
       <img
-        src="/src/assets/008.png"
+        src="/src/assets/loading.png"
         alt="spinner-pikachu"
         className="spinner-image"
       />

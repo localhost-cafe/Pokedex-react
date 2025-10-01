@@ -1,4 +1,4 @@
-import "./Filter.css";
+import './Filter.css';
 
 const Filter = ({ types, selectedType, onChange }) => {
   return (

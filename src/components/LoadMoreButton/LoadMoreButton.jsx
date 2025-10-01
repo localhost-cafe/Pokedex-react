@@ -1,4 +1,4 @@
-import "./LoadMoreButton.css";
+import './LoadMoreButton.css';
 
 function LoadMoreButton({ onClick, loading }) {
   return (
@@ -8,7 +8,7 @@ function LoadMoreButton({ onClick, loading }) {
       disabled={loading}
       aria-busy={loading}
     >
-      {loading ? "Loading..." : "Load More"}
+      {loading ? 'Loading...' : 'Load More'}
     </button>
   );
 }

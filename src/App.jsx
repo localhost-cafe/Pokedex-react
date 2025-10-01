@@ -1,78 +1,73 @@
-import { useEffect, useState } from "react";
-import Filter from "./components/Filter/Filter";
-import Header from "./components/Header/Header";
-import LoadMoreButton from "./components/LoadMoreButton/LoadMoreButton";
-import PokemonDetailsModal from "./components/PokemonDetailsModal/PokemonDetailsModal";
-import PokemonList from "./components/PokemonList/PokemonList";
-import PokemonListSpinner from "./components/PokemonListSpinner/PokemonListSpinner";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import Filter from './components/Filter/Filter';
+import Header from './components/Header/Header';
+import LoadMoreButton from './components/LoadMoreButton/LoadMoreButton';
+import PokemonDetailsModal from './components/PokemonDetailsModal/PokemonDetailsModal';
+import PokemonList from './components/PokemonList/PokemonList';
+import PokemonListSpinner from './components/PokemonListSpinner/PokemonListSpinner';
+
+import { fetchPokemonDetails, fetchPokemons } from './Api/pokemons-api';
+import { POKEMON_TYPE } from './constants/pokemon-types';
 
 function App() {
-  const [selectedType, setSelectedType] = useState("all");
-  const [pokemons, setPokemons] = useState([]);
+  const [selectedType, setSelectedType] = useState('all');
+  const [pokemons, setDetailedPokemons] = useState([]);
   const [offset, setOffset] = useState(0);
   const limit = 12;
-  const [loading, setLoading] = useState(true);
+  const [isPokemonsLoading, setIsPokemonsLoading] = useState(true);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
 
-  const fetchPokemons = async (offset, limit) => {
-    const res = await fetch(
-      `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
-    );
-    const data = await res.json();
-    return data.results;
-  };
-
-  const fetchPokemonDetails = async (url) => {
-    const res = await fetch(url);
-    const data = await res.json();
-    return data;
-  };
-
-  const loadPokemons = async () => {
-    setLoading(true);
+  const loadPokemons = useCallback(async () => {
+    setIsPokemonsLoading(true);
     try {
-      const basicPokemons = await fetchPokemons(offset, limit);
+      const pokemons = await fetchPokemons(offset, limit);
       const detailedPokemons = await Promise.all(
-        basicPokemons.map((p) => fetchPokemonDetails(p.url))
+        pokemons.map((pokemon) => fetchPokemonDetails(pokemon.url))
       );
 
-      setPokemons((prev) => {
-        const combined = [...prev, ...detailedPokemons];
-        const uniqueMap = new Map();
-        combined.forEach((pokemon) => {
-          uniqueMap.set(pokemon.id, pokemon);
-        });
-        return Array.from(uniqueMap.values());
-      });
-
+      setDetailedPokemons((prev) => [...prev, ...detailedPokemons]);
       setOffset((prev) => prev + limit);
+    } catch (error) {
+      console.error('Error loading pokemons:', error);
     } finally {
-      setLoading(false);
+      setIsPokemonsLoading(false);
     }
-  };
+  }, [offset, limit]);
 
   useEffect(() => {
     loadPokemons();
-  }, []);
+  }, [loadPokemons]);
 
-  const filteredPokemons = pokemons.filter((pokemon) => {
-    if (selectedType === "all") return true;
-    if (!pokemon.types) return false;
-    return pokemon.types.some((t) => t.type.name === selectedType);
-  });
+  const filteredPokemons = useMemo(() => {
+    return pokemons.filter((pokemon) => {
+      if (selectedType === 'all') {
+        return true;
+      }
+      if (!pokemon.types) {
+        return false;
+      }
+      return pokemon.types.some((type) => type.name === selectedType);
+    });
+  }, [pokemons, selectedType]);
 
   return (
     <>
       <Header />
-      <div className="pokemon-list-container" style={{ display: "flex" }}>
+      <div className="pokemon-list-container" style={{ display: 'flex' }}>
         <div style={{ flex: 1 }}>
           <Filter
-            types={["fire", "water", "grass", "electric"]}
+            types={[
+              POKEMON_TYPE.ALL,
+              ...Object.values(POKEMON_TYPE).filter(
+                (type) => type !== POKEMON_TYPE.ALL
+              ),
+            ]}
             selectedType={selectedType}
             onChange={setSelectedType}
           />
 
-          {loading && pokemons.length === 0 ? (
+          {isPokemonsLoading && pokemons.length === 0 ? (
             <PokemonListSpinner />
           ) : (
             <>
@@ -81,8 +76,11 @@ function App() {
                 onSelect={(pokemon) => setSelectedPokemon(pokemon)}
                 selectedPokemon={selectedPokemon}
               />
-              {!loading && pokemons.length > 0 && (
-                <LoadMoreButton onClick={loadPokemons} loading={loading} />
+              {!isPokemonsLoading && pokemons.length > 0 && (
+                <LoadMoreButton
+                  onClick={loadPokemons}
+                  isPokemonsLoading={isPokemonsLoading}
+                />
               )}
             </>
           )}
