@@ -1,0 +1,39 @@
+.pokemon-type-filter-container {
+  padding: 8px 9px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+#type-filter {
+  width: 200px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+#type-filter:hover,
+#type-filter:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+#type-filter option {
+  padding: 10px;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .filter-container {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  #type-filter {
+    font-size: 1.1rem;
+    padding: 10px 14px;
+  }
+}
