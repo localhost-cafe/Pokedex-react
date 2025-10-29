@@ -9,9 +9,12 @@ function PokemonCard({ pokemon, onSelect, isActive }) {
       <img src={pokemon.sprites.front_default} alt={pokemon.name} />
       <h3>{pokemon.name}</h3>
       <div className="pokemon-types">
-        {pokemon.types.map((type) => (
-          <span key={type.name} className={`type ${type.name}`}>
-            {type.name}
+        {pokemon.types.map((typeObj, index) => (
+          <span
+            key={`${typeObj.type.name}-${index}`}
+            className={`type ${typeObj.type.name}`}
+          >
+            {typeObj.type.name}
           </span>
         ))}
       </div>

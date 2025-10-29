@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { fetchPokemonDetails, fetchPokemons } from './Api/pokemons-api';
 
 import Filter from './components/Filter/Filter';
 import Header from './components/Header/Header';
@@ -7,49 +8,64 @@ import PokemonDetailsModal from './components/PokemonDetailsModal/PokemonDetails
 import PokemonList from './components/PokemonList/PokemonList';
 import PokemonListSpinner from './components/PokemonListSpinner/PokemonListSpinner';
 
-import { fetchPokemonDetails, fetchPokemons } from './Api/pokemons-api';
 import { POKEMON_TYPE } from './constants/pokemon-types';
 
 function App() {
   const [selectedType, setSelectedType] = useState('all');
-  const [pokemons, setDetailedPokemons] = useState([]);
+  const [pokemons, setPokemons] = useState([]);
   const [offset, setOffset] = useState(0);
-  const limit = 12;
+  const limit = 9;
   const [isPokemonsLoading, setIsPokemonsLoading] = useState(true);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
 
   const loadPokemons = useCallback(async () => {
     setIsPokemonsLoading(true);
     try {
-      const pokemons = await fetchPokemons(offset, limit);
-      const detailedPokemons = await Promise.all(
-        pokemons.map((pokemon) => fetchPokemonDetails(pokemon.url))
+      const newPokemons = await fetchPokemons(offset, limit, selectedType);
+
+      const detailed = await Promise.all(
+        newPokemons.map(async (p) => {
+          if (p.sprites && p.stats) return p;
+          return await fetchPokemonDetails(p.url);
+        })
       );
 
-      setDetailedPokemons((prev) => [...prev, ...detailedPokemons]);
+      setPokemons((prev) => {
+        const combined = [...prev, ...detailed];
+        const unique = combined.filter(
+          (pokemon, index, self) =>
+            index === self.findIndex((p) => p.id === pokemon.id)
+        );
+        return unique;
+      });
+
       setOffset((prev) => prev + limit);
     } catch (error) {
-      console.error('Error loading pokemons:', error);
+      console.error('❌ Error loading pokemons:', error);
     } finally {
       setIsPokemonsLoading(false);
     }
-  }, [offset, limit]);
+  }, [offset, limit, selectedType]);
 
   useEffect(() => {
+    setPokemons([]);
+    setOffset(0);
     loadPokemons();
-  }, [loadPokemons]);
+  }, [selectedType]);
 
-  const filteredPokemons = useMemo(() => {
-    return pokemons.filter((pokemon) => {
-      if (selectedType === 'all') {
-        return true;
+  const handleSelectPokemon = async (pokemon) => {
+    try {
+      if (!pokemon.sprites || !pokemon.stats) {
+        const detailed = await fetchPokemonDetails(pokemon.url);
+        console.log(detailed);
+        setSelectedPokemon(detailed);
+      } else {
+        setSelectedPokemon(pokemon);
       }
-      if (!pokemon.types) {
-        return false;
-      }
-      return pokemon.types.some((type) => type.name === selectedType);
-    });
-  }, [pokemons, selectedType]);
+    } catch (error) {
+      console.error('❌ Failed to load pokemon details:', error);
+    }
+  };
 
   return (
     <>
@@ -60,7 +76,7 @@ function App() {
             types={[
               POKEMON_TYPE.ALL,
               ...Object.values(POKEMON_TYPE).filter(
-                (type) => type !== POKEMON_TYPE.ALL
+                (t) => t !== POKEMON_TYPE.ALL
               ),
             ]}
             selectedType={selectedType}
@@ -72,8 +88,8 @@ function App() {
           ) : (
             <>
               <PokemonList
-                pokemons={filteredPokemons}
-                onSelect={(pokemon) => setSelectedPokemon(pokemon)}
+                pokemons={pokemons}
+                onSelect={handleSelectPokemon}
                 selectedPokemon={selectedPokemon}
               />
               {!isPokemonsLoading && pokemons.length > 0 && (

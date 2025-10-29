@@ -9,11 +9,14 @@ const Filter = ({ types, selectedType, onChange }) => {
         onChange={(e) => onChange(e.target.value)}
       >
         <option value="all">All</option>
-        {types.map((type) => (
-          <option key={type} value={type}>
-            {type.charAt(0).toUpperCase() + type.slice(1)}
-          </option>
-        ))}
+
+        {types
+          .filter((type) => type !== 'all')
+          .map((type) => (
+            <option key={type} value={type}>
+              {type.charAt(0).toUpperCase() + type.slice(1)}
+            </option>
+          ))}
       </select>
     </div>
   );
