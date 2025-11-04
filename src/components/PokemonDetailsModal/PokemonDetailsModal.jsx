@@ -1,7 +1,8 @@
 import './PokemonDetailsModal.css';
 
 function findPokemonBaseStat(pokemon, statName) {
-  const stat = pokemon.stats.find((stat) => stat.name === statName);
+  if (!pokemon.stats) return '-';
+  const stat = pokemon.stats.find((s) => s.stat.name === statName);
   return stat ? stat.base_stat : '-';
 }
 
@@ -13,16 +14,19 @@ export default function PokemonDetailsModal({ pokemon, onClose }) {
       <button onClick={onClose} title="Close" className="close-button">
         &times;
       </button>
-      <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+
+      <img src={pokemon.sprites?.front_default} alt={pokemon.name} />
+
       <h2>
-        {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)} #
-        {pokemon.id.toString().padStart(3, '0')}
+        {pokemon.name?.charAt(0).toUpperCase() + pokemon.name?.slice(1)} #
+        {pokemon.id?.toString().padStart(3, '0')}
       </h2>
+
       <table className="pokemon-stats-table">
         <tbody>
           <tr>
             <td>Type</td>
-            <td>{pokemon.types.map((type) => type.name).join(', ')}</td>
+            <td>{pokemon.types?.map((t) => t.type.name).join(', ') || '-'}</td>
           </tr>
           <tr>
             <td>Attack</td>
@@ -50,11 +54,11 @@ export default function PokemonDetailsModal({ pokemon, onClose }) {
           </tr>
           <tr>
             <td>Weight</td>
-            <td>{pokemon.weight}</td>
+            <td>{pokemon.weight || '-'}</td>
           </tr>
           <tr>
             <td>Total moves</td>
-            <td>{pokemon.moves.length}</td>
+            <td>{pokemon.moves?.length || '-'}</td>
           </tr>
         </tbody>
       </table>

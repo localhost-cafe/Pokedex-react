@@ -4,7 +4,7 @@ const PokemonListSpinner = () => {
   return (
     <div className="pokemon-list-spinner">
       <img
-        src="/src/assets/loading.png"
+        src="/src/assets/loader.png"
         alt="spinner-pikachu"
         className="spinner-image"
       />
